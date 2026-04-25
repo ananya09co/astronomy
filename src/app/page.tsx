@@ -7,7 +7,7 @@ import IssWidget from '@/components/home/IssWidget'
 
 const sectionCards = [
   { href: '/mars', icon: Activity, label: 'Mars Command', desc: 'Live telemetry & raw photos from Perseverance', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
-  { href: '/planetarium', icon: Maximize2, label: 'Orbits', desc: 'Interactive 3D solar system visualizer', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)' },
+  { href: '/planetarium', icon: Maximize2, label: 'Planetarium', desc: 'Interactive 3D solar system visualizer', color: '#8b5cf6', bg: 'rgba(139,92,246,0.1)' },
   { href: '/events', icon: Calendar, label: 'Celestial Events', desc: 'Meteor showers, eclipses & live asteroid tracker', color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
   { href: '/star-of-day', icon: Star, label: 'Star of the Day', desc: 'Daily featured star with real Hubble imagery', color: '#06b6d4', bg: 'rgba(6,182,212,0.1)' },
   { href: '/news', icon: Newspaper, label: 'Space News', desc: 'Live feed from NASA, SpaceX, ESA & more', color: '#6366f1', bg: 'rgba(99,102,241,0.1)' },
