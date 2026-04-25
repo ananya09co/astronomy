@@ -50,7 +50,7 @@ export default async function MarsPage() {
         </div>
 
         {/* Main Feed Visualization */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
           
           {/* Main Monitor */}
           <div className="glass" style={{ padding: '4px', overflow: 'hidden', position: 'relative', minHeight: '500px' }}>

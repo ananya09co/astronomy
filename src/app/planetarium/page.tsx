@@ -87,7 +87,7 @@ export default function PlanetariumPage() {
     <div style={{ paddingTop: '80px', minHeight: '100vh', background: '#020617', overflow: 'hidden', position: 'relative' }}>
       
       {/* Side Info Panel */}
-      <div style={{ position: 'absolute', top: '100px', left: '30px', zIndex: 10, width: '320px' }}>
+      <div className="planetarium-ui">
         <div className="section-tag">Interactive Planetarium</div>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem' }}>Cosmic <span className="gradient-text">Orbits</span></h1>
         
@@ -126,16 +126,16 @@ export default function PlanetariumPage() {
       </div>
 
       {/* Visualizer */}
-      <div style={{ width: '100vw', height: '90vh', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'grab' }}>
+      <div className="planetarium-container">
         <svg
           ref={svgRef}
           viewBox="0 0 1000 1000"
-          style={{ width: 'auto', height: '100%', objectFit: 'contain' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain' }}
         />
       </div>
 
       {/* Legends */}
-      <div style={{ position: 'absolute', bottom: '30px', right: '30px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div className="planetarium-legends" style={{ position: 'absolute', bottom: '30px', right: '30px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
         <div className="glass" style={{ padding: '12px 20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: 10, height: 10, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.3)' }} />
           <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>ORBIT PATTERNS</span>

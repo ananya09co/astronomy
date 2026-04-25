@@ -505,3 +505,43 @@ h1, h2, h3, h4, h5, h6 {
   overflow-y: auto;
   position: relative;
 }
+/* ═══════════════════════════════════════════════════════
+   PLANETARIUM SPECIAL RESPONSIVE
+   ═══════════════════════════════════════════════════════ */
+.planetarium-container {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  position: relative;
+}
+
+.planetarium-ui {
+  position: absolute;
+  top: 100px;
+  left: 30px;
+  z-index: 10;
+  width: 320px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .planetarium-ui {
+    position: relative;
+    top: 20px;
+    left: 0;
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+  }
+  
+  .planetarium-container {
+    height: 60vh;
+  }
+
+  .planetarium-legends {
+    display: none !important;
+  }
+}

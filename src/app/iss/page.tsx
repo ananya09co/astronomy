@@ -90,25 +90,27 @@ export default function IssTrackerPage() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'start' }}>
-          {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
-            {loading ? (
-              [...Array(6)].map((_, i) => <div key={i} className="glass shimmer" style={{ height: 90, borderRadius: 12 }} />)
-            ) : (
-              stats.map(s => (
-                <div key={s.label} className="glass" style={{ padding: '1.25rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: `${s.color}15`, border: `1px solid ${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <s.icon size={16} color={s.color} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          {/* Main Content Grid (Stats + Crew) */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {/* Stats Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
+              {loading ? (
+                [...Array(6)].map((_, i) => <div key={i} className="glass shimmer" style={{ height: 90, borderRadius: 12 }} />)
+              ) : (
+                stats.map(s => (
+                  <div key={s.label} className="glass" style={{ padding: '1.25rem', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, background: `${s.color}15`, border: `1px solid ${s.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <s.icon size={16} color={s.color} />
+                    </div>
+                    <div>
+                      <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: 2 }}>{s.label}</div>
+                      <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.9rem', fontVariantNumeric: 'tabular-nums' }}>{s.value}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', marginBottom: 2 }}>{s.label}</div>
-                    <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '0.9rem', fontVariantNumeric: 'tabular-nums' }}>{s.value}</div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+                ))
+              )}
+            </div>
 
           {/* Crew Card */}
           <div className="glass" style={{ padding: '1.5rem', minWidth: 280 }}>
@@ -144,7 +146,8 @@ export default function IssTrackerPage() {
         </div>
       </div>
     </div>
-  )
+  </div>
+)
 }
 
 // Simplified continent rendering using pre-computed bezier points
