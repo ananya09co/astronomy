@@ -57,14 +57,14 @@ export default function IssTrackerPage() {
 
         {/* World Map Component */}
         <div className="glass" style={{ padding: '1.5rem', marginBottom: '2rem', borderRadius: 24, overflow: 'hidden' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', padding: '0 0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', padding: '0 0.5rem', flexWrap: 'wrap', gap: '1rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981', animation: 'pulse-glow 1s infinite' }} />
-              <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: '1rem' }}>Global Telemetry Map</span>
+              <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: '0.9rem' }}>Global Telemetry Map</span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
               <RefreshCw size={14} />
-              {lastUpdate ? `LAST RELAY: ${lastUpdate.toLocaleTimeString()}` : 'ESTABLISHING LINK...'}
+              {lastUpdate ? `RE-LINK: ${lastUpdate.toLocaleTimeString()}` : 'ESTABLISHING...'}
             </div>
           </div>
           

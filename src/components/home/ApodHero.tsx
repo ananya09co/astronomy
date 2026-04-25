@@ -17,7 +17,8 @@ export default function ApodHero({ apod }: { apod: ApodData }) {
 
   return (
     <div className="glass" style={{ overflow: 'hidden', borderRadius: 20 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', minHeight: 400 }}>
+      {/* Container with responsive grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', minHeight: 400 }}>
         {/* Image */}
         <div style={{ position: 'relative', overflow: 'hidden', minHeight: 340 }}>
           {isImage ? (
