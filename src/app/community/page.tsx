@@ -3,6 +3,19 @@ import { useState, useEffect } from 'react'
 import { Users, Upload, Heart, MapPin, Trophy, X, Camera } from 'lucide-react'
 import api from '@/lib/api'
 
+const AVATAR_GRADIENTS = [
+  'linear-gradient(135deg, #6366f1, #8b5cf6)', // Indigo-Violet
+  'linear-gradient(135deg, #06b6d4, #3b82f6)', // Cyan-Blue
+  'linear-gradient(135deg, #d946ef, #8b5cf6)', // Fuchsia-Violet
+  'linear-gradient(135deg, #f43f5e, #8b5cf6)', // Rose-Violet
+  'linear-gradient(135deg, #10b981, #06b6d4)', // Emerald-Cyan
+]
+
+function getAvatarGradient(name: string) {
+  const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  return AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length]
+}
+
 export default function CommunityPage() {
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -90,7 +103,12 @@ export default function CommunityPage() {
               </div>
               <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.875rem' }}>
+                  <div style={{ 
+                    width: 36, height: 36, borderRadius: '50%', 
+                    background: getAvatarGradient(photoOfWeek.username), 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                    fontWeight: 700, fontSize: '0.875rem', color: 'white' 
+                  }}>
                     {photoOfWeek.username[0].toUpperCase()}
                   </div>
                   <div>
@@ -141,7 +159,12 @@ export default function CommunityPage() {
                 </div>
                 <div style={{ padding: '1.25rem' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 700 }}>
+                    <div style={{ 
+                      width: 28, height: 28, borderRadius: '50%', 
+                      background: getAvatarGradient(post.username), 
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                      fontSize: '0.7rem', fontWeight: 700, color: 'white' 
+                    }}>
                       {post.username[0].toUpperCase()}
                     </div>
                     <div>
