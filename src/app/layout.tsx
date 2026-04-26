@@ -8,7 +8,7 @@ import MeteorRain from '@/components/ui/MeteorRain'
 import StructuredData from '@/components/seo/StructuredData'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cosmic-atlas.vercel.app'),
+  metadataBase: new URL('https://astronmy.vercel.app'),
   title: {
     default: 'Cosmic Atlas — Explore the Universe',
     template: '%s | Cosmic Atlas'
