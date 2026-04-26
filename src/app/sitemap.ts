@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://cosmic-atlas.vercel.app'
+  const baseUrl = 'https://astronmy.vercel.app'
   
   const routes = [
     '',
