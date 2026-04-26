@@ -3,10 +3,14 @@ import { supabase } from './supabase';
 export const serverData = {
   getStarOfDay: async () => {
     try {
+      const { count } = await supabase.from('stars').select('*', { count: 'exact', head: true });
+      const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+      const offset = count ? dayOfYear % count : 0;
+
       const { data, error } = await supabase
         .from('stars')
         .select('*')
-        .limit(1)
+        .range(offset, offset)
         .single();
       if (error) throw error;
       return { success: true, data };
@@ -43,7 +47,10 @@ export const serverData = {
   getTodayApod: async () => {
     const NASA_API_KEY = process.env.NASA_API_KEY || 'DEMO_KEY';
     try {
-      const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`);
+      // Revalidate every 4 hours to ensure we catch the new APOD regardless of build time
+      const res = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${NASA_API_KEY}`, {
+        next: { revalidate: 14400 } 
+      });
       const data = await res.json();
       return { success: true, data };
     } catch {

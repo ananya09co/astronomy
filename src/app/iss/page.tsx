@@ -92,9 +92,9 @@ export default function IssTrackerPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {/* Main Content Grid (Stats + Crew) */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
             {/* Stats Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1rem' }}>
               {loading ? (
                 [...Array(6)].map((_, i) => <div key={i} className="glass shimmer" style={{ height: 90, borderRadius: 12 }} />)
               ) : (

@@ -1,7 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { Layers, X, Globe, Star, Calendar, ChevronRight } from 'lucide-react'
+import { Layers, X, Globe, Star, Calendar, ChevronRight, Heart } from 'lucide-react'
 import api from '@/lib/api'
+import { useUserSession } from '@/hooks/useUserSession'
 
 const HEMISPHERES = ['all', 'northern', 'southern']
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -15,10 +16,13 @@ const CONSTELLATION_ICONS: Record<string, string> = {
 }
 
 export default function ConstellationsPage() {
+  const userId = useUserSession()
+  const currentMonth = MONTHS[new Date().getMonth()]
   const [constellations, setConstellations] = useState<any[]>([])
+  const [favorites, setFavorites] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [hemisphere, setHemisphere] = useState('all')
-  const [selectedMonth, setSelectedMonth] = useState('')
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth)
   const [selected, setSelected] = useState<any | null>(null)
   const [search, setSearch] = useState('')
 
@@ -31,11 +35,33 @@ export default function ConstellationsPage() {
         if (selectedMonth) params.month = selectedMonth
         const res = await api.getConstellations(params)
         setConstellations(res.data || [])
+
+        // Load favorites if user session is active
+        if (userId) {
+          const favRes = await api.getFavorites(userId)
+          if (favRes.success) setFavorites(favRes.data || [])
+        }
       } catch { setConstellations([]) }
       setLoading(false)
     }
     load()
-  }, [hemisphere, selectedMonth])
+  }, [hemisphere, selectedMonth, userId])
+
+  const handleToggleFavorite = async (e: React.MouseEvent, itemId: string) => {
+    e.stopPropagation()
+    if (!userId) return
+
+    const isFav = favorites.includes(itemId)
+    try {
+      // Optimistic UI update
+      setFavorites(prev => isFav ? prev.filter(id => id !== itemId) : [...prev, itemId])
+      await api.toggleFavorite(userId, itemId, !isFav)
+    } catch (err) {
+      // Revert on error
+      setFavorites(prev => isFav ? [...prev, itemId] : prev.filter(id => id !== itemId))
+      console.error('Failed to toggle favorite:', err)
+    }
+  }
 
   const filtered = constellations.filter(c =>
     c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -69,9 +95,14 @@ export default function ConstellationsPage() {
             </button>
           ))}
           <select className="cosmic-input" style={{ width: 'auto' }} value={selectedMonth} onChange={e => setSelectedMonth(e.target.value)}>
-            <option value="">Best Any Month</option>
-            {MONTHS.map(m => <option key={m} value={m}>{m}</option>)}
+            <option value="">Full Year View</option>
+            {MONTHS.map(m => <option key={m} value={m}>{m}{m === currentMonth ? ' (Current)' : ''}</option>)}
           </select>
+          {selectedMonth !== currentMonth && (
+             <button className="btn-ghost" style={{ padding: '8px 16px' }} onClick={() => setSelectedMonth(currentMonth)}>
+               ✨ Visible Tonight
+             </button>
+          )}
         </div>
 
         {/* Grid */}
@@ -102,11 +133,29 @@ export default function ConstellationsPage() {
                       return <circle key={i} cx={x} cy={y} r="3" />
                     })}
                   </svg>
+
+                  {/* Favorite Button */}
+                  <button
+                    onClick={(e) => handleToggleFavorite(e, c.id)}
+                    style={{
+                      position: 'absolute', top: 0, right: 0,
+                      background: 'rgba(0,0,0,0.3)', border: 'none', borderRadius: 8,
+                      width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', transition: 'all 0.2s', zIndex: 5,
+                      color: favorites.includes(c.id) ? '#ef4444' : 'rgba(255,255,255,0.4)'
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = 'rgba(0,0,0,0.5)'}
+                    onMouseLeave={e => e.currentTarget.style.background = 'rgba(0,0,0,0.3)'}
+                  >
+                    <Heart size={16} fill={favorites.includes(c.id) ? 'currentColor' : 'none'} />
+                  </button>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
                   <span style={{ fontSize: '1.25rem' }}>{CONSTELLATION_ICONS[c.name] || '✨'}</span>
                   <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: '1rem' }}>{c.name}</h3>
-                  <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>({c.abbreviation})</span>
+                  {c.best_month?.includes(currentMonth) && (
+                    <span className="badge-meteor" style={{ padding: '1px 6px', fontSize: '0.6rem', borderRadius: 4 }}>VISIBLE NOW</span>
+                  )}
                 </div>
                 <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', marginBottom: '0.75rem' }}>
                   Brightest: {c.brightest_star} · Best: {c.best_month}
@@ -142,7 +191,7 @@ export default function ConstellationsPage() {
               </button>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+            <div className="modal-grid">
               {/* SVG */}
               <div style={{ background: 'rgba(99,102,241,0.05)', borderRadius: 12, padding: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg viewBox="0 0 120 120" width="200" height="200" className="constellation-svg">

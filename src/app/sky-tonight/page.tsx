@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import { MapPin, Navigation, Loader2, Star } from 'lucide-react'
+import { MapPin, Navigation, Loader2, Star, Layers } from 'lucide-react'
+import api from '@/lib/api'
 
 // 88 stars for a basic sky map
 const SKY_STARS = [
@@ -94,6 +95,8 @@ export default function SkyTonightPage() {
   const [locName, setLocName] = useState('New Delhi, India')
   const [geoLoading, setGeoLoading] = useState(false)
   const [hoveredStar, setHoveredStar] = useState<{ name: string; x: number; y: number } | null>(null)
+  const [visibleConstellations, setVisibleConstellations] = useState<any[]>([])
+  const [constLoading, setConstLoading] = useState(true)
 
   function detectLocation() {
     setGeoLoading(true)
@@ -107,6 +110,26 @@ export default function SkyTonightPage() {
       () => setGeoLoading(false)
     )
   }
+
+  useEffect(() => {
+    async function loadVisibleConstellations() {
+      setConstLoading(true)
+      try {
+        const month = new Date().toLocaleString('en-US', { month: 'long' })
+        const hemisphere = lat >= 0 ? 'northern' : 'southern'
+        
+        const res = await api.getConstellations({ hemisphere, month })
+        if (res.success) {
+          setVisibleConstellations(res.data || [])
+        }
+      } catch (err) {
+        console.error('Failed to load constellations:', err)
+      } finally {
+        setConstLoading(false)
+      }
+    }
+    loadVisibleConstellations()
+  }, [lat])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -234,7 +257,7 @@ export default function SkyTonightPage() {
           <p className="section-subtitle">See what's visible from your location right now — calculated in real time.</p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '3rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '3rem', alignItems: 'start' }}>
           {/* Controls */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Location */}
@@ -336,6 +359,49 @@ export default function SkyTonightPage() {
                 ⭐ {hoveredStar.name}
               </div>
             )}
+          </div>
+
+          {/* Visible Constellations List */}
+          <div className="glass" style={{ padding: '1.5rem', maxHeight: 480, overflowY: 'auto' }}>
+            <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Layers size={16} color="var(--accent-violet)" /> Constellations Visible Tonight
+            </h3>
+            
+            {constLoading ? (
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}>
+                <Loader2 size={24} className="animate-spin" color="var(--text-muted)" />
+              </div>
+            ) : visibleConstellations.length === 0 ? (
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', textAlign: 'center', padding: '1rem' }}>
+                No major constellations visible in this range tonight.
+              </p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                {visibleConstellations.map(c => (
+                  <div key={c.id} style={{
+                    padding: '0.75rem',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                  }}>
+                    <div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{c.name}</div>
+                      <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{c.best_month} · {c.hemisphere}</div>
+                    </div>
+                    <div style={{ fontSize: '1.25rem' }}>
+                      {c.name === 'Orion' ? '🏹' : c.name === 'Leo' ? '🦁' : '✨'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            <p style={{ marginTop: '1.5rem', fontSize: '0.75rem', color: 'var(--text-muted)', textAlign: 'center' }}>
+              Based on your latitude of <strong>{lat.toFixed(1)}°</strong> and the current month.
+            </p>
           </div>
         </div>
       </div>

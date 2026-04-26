@@ -41,12 +41,23 @@ export const api = {
   likeGallery: (id: string | number) =>
     fetch(`${API_BASE}/api/gallery/${id}/like`, { method: 'POST' }).then(r => r.json()),
 
+  // Favorites
+  getFavorites: (userId: string) => fetcher<any>(`/api/favorites?userId=${userId}`),
+  toggleFavorite: (userId: string, itemId: string, isFavorite: boolean) =>
+    fetch(`${API_BASE}/api/favorites`, {
+      method: isFavorite ? 'POST' : 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, itemId })
+    }).then(r => r.json()),
+
   getCommunity: () => fetcher<any>('/api/community'),
   submitPhoto: (data: any) =>
     fetch(`${API_BASE}/api/community`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
 
-  chat: (message: string) =>
-    fetch(`${API_BASE}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) }).then(r => r.json()),
+  // Chat
+  getChatHistory: (userId: string) => fetcher<any>(`/api/chat/history?userId=${userId}`),
+  chat: (message: string, userId?: string) =>
+    fetch(`${API_BASE}/api/chat`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, userId }) }).then(r => r.json()),
 
   // ISS Live Tracking
   getIssLocation: () => fetcher<any>('/api/iss/location'),

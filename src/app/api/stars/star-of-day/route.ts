@@ -3,11 +3,17 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    // In a real app, you'd pick one based on date. For now, we take the one with the closest featured_date.
+    // Get total count to determine rotation
+    const { count } = await supabase.from('stars').select('*', { count: 'exact', head: true });
+    
+    // Use day of year to pick a star
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 86400000);
+    const offset = count ? dayOfYear % count : 0;
+
     const { data: star, error } = await supabase
       .from('stars')
       .select('*')
-      .limit(1)
+      .range(offset, offset)
       .single();
 
     if (error) throw error;

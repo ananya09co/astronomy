@@ -32,6 +32,12 @@ export default function Navbar() {
     setMobileOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    const toggle = () => setMobileOpen(o => !o)
+    window.addEventListener('toggleMobileMenu', toggle)
+    return () => window.removeEventListener('toggleMobileMenu', toggle)
+  }, [])
+
   return (
     <nav
       style={{
@@ -116,7 +122,6 @@ export default function Navbar() {
             color: 'white',
             padding: '8px',
             cursor: 'pointer',
-            display: 'none',
           }}
           className="show-mobile"
           aria-label="Toggle menu"
@@ -131,10 +136,10 @@ export default function Navbar() {
           background: 'rgba(10, 15, 30, 0.98)',
           backdropFilter: 'blur(20px)',
           borderTop: '1px solid var(--border-color)',
-          padding: '1rem',
+          padding: '1.25rem',
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.25rem',
+          gap: '0.4rem',
         }}>
           {navLinks.map(link => (
             <Link
@@ -148,6 +153,7 @@ export default function Navbar() {
                 fontWeight: 500,
                 color: pathname === link.href ? 'white' : 'var(--text-subtle)',
                 background: pathname === link.href ? 'rgba(99,102,241,0.2)' : 'transparent',
+                border: pathname === link.href ? '1px solid rgba(99,102,241,0.4)' : '1px solid transparent',
               }}
             >
               {link.label}
@@ -163,6 +169,13 @@ export default function Navbar() {
         }
         @media (min-width: 901px) {
           .show-mobile { display: none !important; }
+        }
+        
+        /* Mobile menu specific overrides */
+        @media (max-width: 768px) {
+           nav {
+             padding-top: env(safe-area-inset-top);
+           }
         }
       `}</style>
     </nav>

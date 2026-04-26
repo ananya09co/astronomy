@@ -27,9 +27,9 @@ export default function Footer() {
       paddingTop: '3rem',
     }}>
       <div className="container-cosmic">
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '3rem', paddingBottom: '3rem' }}>
+        <div className="footer-grid">
           {/* Brand */}
-          <div>
+          <div className="footer-brand">
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '1rem' }}>
               <div style={{
                 width: 36, height: 36,
@@ -55,22 +55,30 @@ export default function Footer() {
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
               {[
-                { Icon: MessageCircle, href: '#', label: 'X / Twitter' },
-                { Icon: Rss, href: '#', label: 'YouTube' },
-                { Icon: Send, href: '#', label: 'GitHub' },
-                { Icon: Mail, href: '#', label: 'Email' },
+                { Icon: MessageCircle, href: 'https://twitter.com', label: 'X / Twitter' },
+                { Icon: Rss, href: 'https://youtube.com', label: 'YouTube' },
+                { Icon: Send, href: 'https://github.com', label: 'GitHub' },
+                { Icon: Mail, href: 'mailto:contact@cosmicatlas.io', label: 'Email' },
               ].map(({ Icon, href, label }) => (
-                <a key={label} href={href} aria-label={label} style={{
-                  width: 36, height: 36,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  borderRadius: '8px',
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid var(--border-color)',
-                  color: 'var(--text-muted)',
-                  transition: 'all 0.2s ease',
-                  textDecoration: 'none',
-                }}>
-                  <Icon size={16} />
+                <a 
+                  key={label} 
+                  href={href} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  aria-label={label} 
+                  className="social-icon-footer"
+                  style={{
+                    width: 38, height: 38,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderRadius: '10px',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: 'var(--text-muted)',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Icon size={18} />
                 </a>
               ))}
             </div>
@@ -108,18 +116,28 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div style={{
-          borderTop: '1px solid var(--border-color)',
-          paddingTop: '1.5rem',
-          paddingBottom: '1.5rem',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          paddingTop: '2rem',
+          paddingBottom: '2rem',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '1rem',
         }}>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            © 2026 Cosmic Atlas. Built for humanity's curiosity.
-          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+              © 2026 Cosmic Atlas. Built for humanity's curiosity.
+            </p>
+            <p style={{ 
+              color: 'var(--accent-cyan)', 
+              fontSize: '0.85rem', 
+              fontWeight: 600,
+              fontFamily: 'Space Grotesk, sans-serif' 
+            }}>
+              Designed & Developed by Ananya
+            </p>
+          </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
             Data: NASA · ESA · ISRO · IAU
           </p>

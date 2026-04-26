@@ -1,7 +1,8 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import { Bot, Send, User, Sparkles, RotateCcw, Loader2 } from 'lucide-react'
+import { Bot, Send, User, Sparkles, RotateCcw, Loader2, Trash2 } from 'lucide-react'
 import api from '@/lib/api'
+import { useUserSession } from '@/hooks/useUserSession'
 
 interface Message {
   id: number
@@ -33,18 +34,45 @@ function parseMarkdown(text: string) {
 let msgId = 0
 
 export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: msgId++,
-      role: 'assistant',
-      content: "🌌 **Greetings, cosmic explorer!**\n\nI'm your AI astronomy guide. Ask me anything about the universe — from black holes and nebulae to exoplanets and the Big Bang.\n\nTry one of the suggested topics below, or ask anything on your mind!",
-      timestamp: new Date(),
-    }
-  ])
+  const userId = useUserSession()
+  const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [initializing, setInitializing] = useState(true)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    async function loadHistory() {
+      if (!userId) return
+      try {
+        const res = await api.getChatHistory(userId)
+        if (res.success && res.data.length > 0) {
+          const mapped = res.data.map((m: any) => ({
+            id: m.id,
+            role: m.role,
+            content: m.content,
+            timestamp: new Date(m.created_at)
+          }))
+          setMessages(mapped)
+        } else {
+          setMessages([
+            {
+              id: Date.now(),
+              role: 'assistant',
+              content: "🌌 **Greetings, cosmic explorer!**\n\nI'm your AI astronomy guide. Ask me anything about the universe — from black holes and nebulae to exoplanets and the Big Bang.\n\nTry one of the suggested topics below, or ask anything on your mind!",
+              timestamp: new Date(),
+            }
+          ])
+        }
+      } catch (err) {
+        console.error('Failed to load chat history:', err)
+      } finally {
+        setInitializing(false)
+      }
+    }
+    loadHistory()
+  }, [userId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -60,9 +88,9 @@ export default function ChatPage() {
     try {
       // Simulate streaming delay
       await new Promise(r => setTimeout(r, 600 + Math.random() * 800))
-      const res = await api.chat(text)
+      const res = await api.chat(text, userId || undefined)
       const assistantMsg: Message = {
-        id: msgId++,
+        id: Date.now() + 1,
         role: 'assistant',
         content: res.data?.message || "I'd be delighted to help! Try asking me about black holes, galaxies, or specific planets.",
         timestamp: new Date(),
@@ -80,9 +108,20 @@ export default function ChatPage() {
     inputRef.current?.focus()
   }
 
-  function handleReset() {
+  async function handleReset() {
+    if (userId && window.confirm('Permanently clear cosmic chat history?')) {
+      try {
+        await fetch(`/api/chat/history`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId })
+        })
+      } catch (err) {
+        console.error('Failed to clear history:', err)
+      }
+    }
     setMessages([{
-      id: msgId++,
+      id: Date.now(),
       role: 'assistant',
       content: "🌌 Fresh start! What cosmic wonder can I help you explore today?",
       timestamp: new Date(),

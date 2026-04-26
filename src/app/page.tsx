@@ -4,6 +4,7 @@ import api from '@/lib/api'
 import CountdownTimer from '@/components/home/CountdownTimer'
 import ApodHero from '@/components/home/ApodHero'
 import IssWidget from '@/components/home/IssWidget'
+import LeadGenSection from '@/components/ui/LeadGenSection'
 
 const sectionCards = [
   { href: '/mars', icon: Activity, label: 'Mars Command', desc: 'Live telemetry & raw photos from Perseverance', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
@@ -37,7 +38,7 @@ export default async function HomePage() {
   return (
     <div>
       {/* ── APOD Hero Section ─────────────────────────────────────── */}
-      <section style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', paddingTop: '70px', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', paddingTop: '70px', position: 'relative', overflow: 'hidden' }}>
 
         {/* Real APOD background image — server-safe, no event handlers */}
         {apod?.url && (
@@ -110,7 +111,7 @@ export default async function HomePage() {
           )}
 
           {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', maxWidth: 700, margin: '0 auto' }}>
+          <div className="stats-grid-responsive">
             {[
               { value: 'LIVE', label: 'ISS Tracking' },
               { value: 'NASA', label: 'Real Images' },
@@ -181,6 +182,8 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      <LeadGenSection />
     </div>
   )
 }

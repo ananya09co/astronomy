@@ -84,7 +84,7 @@ export default function PlanetariumPage() {
   }, [timeScale, isPaused])
 
   return (
-    <div style={{ paddingTop: '80px', minHeight: '100vh', background: '#020617', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ paddingTop: '80px', minHeight: '100vh', background: '#020617', overflow: 'auto', position: 'relative' }}>
       
       {/* Side Info Panel */}
       <div className="planetarium-ui">

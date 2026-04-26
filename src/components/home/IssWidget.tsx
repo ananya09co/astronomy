@@ -39,9 +39,9 @@ export default function IssWidget() {
   if (error) return null
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 300px', gap: '2rem', alignItems: 'center' }} className="iss-widget-responsive">
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', alignItems: 'center' }} className="iss-widget-responsive">
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem', flexWrap: 'wrap' }}>
           <div style={{
             width: 10, height: 10, borderRadius: '50%', background: '#10b981',
             boxShadow: '0 0 8px #10b981',
@@ -55,7 +55,7 @@ export default function IssWidget() {
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.75rem' }}>
           {[
             {
               icon: MapPin, label: 'Position', color: '#06b6d4',

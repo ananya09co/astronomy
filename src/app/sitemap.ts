@@ -1,0 +1,28 @@
+import { MetadataRoute } from 'next'
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://cosmic-atlas.vercel.app'
+  
+  const routes = [
+    '',
+    '/news',
+    '/mars',
+    '/gallery',
+    '/constellations',
+    '/iss',
+    '/planetarium',
+    '/sky-tonight',
+    '/star-of-day',
+    '/events',
+    '/astronauts',
+    '/community',
+    '/chat',
+  ]
+
+  return routes.map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: route === '' ? 'daily' : 'weekly',
+    priority: route === '' ? 1 : 0.8,
+  }))
+}

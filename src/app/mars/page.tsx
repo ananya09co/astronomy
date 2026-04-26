@@ -13,18 +13,18 @@ export default async function MarsPage() {
   const mainPhoto = photos?.[0]
 
   return (
-    <div style={{ paddingTop: '80px', minHeight: '100vh', background: '#020617' }}>
+    <div style={{ paddingTop: '80px', minHeight: '100dvh', background: '#020617' }}>
       <div className="container-cosmic">
         
         {/* Dashboard Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '1.5rem' }}>
+        <div className="dashboard-header">
           <div>
             <div className="section-tag" style={{ margin: 0, marginBottom: '0.5rem' }}>Mars Mission Command</div>
             <h1 style={{ fontSize: '2.5rem', fontWeight: 800, margin: 0 }}>
               Rover <span className="gradient-text">Perseverance</span>
             </h1>
           </div>
-          <div style={{ textAlign: 'right', display: 'none', md: 'block' }}>
+          <div className="hidden md:block" style={{ textAlign: 'right' }}>
             <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Status</div>
             <div style={{ color: '#10b981', fontWeight: 800, fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Activity size={18} /> ACTIVE ON SURFACE
@@ -33,7 +33,7 @@ export default async function MarsPage() {
         </div>
 
         {/* Technical Stats Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
           {[
             { icon: Calendar, label: 'Current Sol', value: mainPhoto?.sol || '—', color: '#f59e0b' },
             { icon: Camera, label: 'Active Camera', value: mainPhoto?.camera?.full_name || 'MAZ-Z', color: '#06b6d4' },
@@ -50,10 +50,10 @@ export default async function MarsPage() {
         </div>
 
         {/* Main Feed Visualization */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
           
           {/* Main Monitor */}
-          <div className="glass" style={{ padding: '4px', overflow: 'hidden', position: 'relative', minHeight: '500px' }}>
+          <div className="glass" style={{ padding: '4px', overflow: 'hidden', position: 'relative', minHeight: 'clamp(300px, 60vh, 600px)' }}>
             {mainPhoto ? (
               <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                 <img 

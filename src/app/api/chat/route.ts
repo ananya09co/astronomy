@@ -19,7 +19,7 @@ const genericResponses = [
 ];
 
 export async function POST(request: Request) {
-  const { message } = await request.json();
+  const { message, userId } = await request.json();
 
   if (!message || message.trim() === '') {
     return NextResponse.json({ success: false, message: 'Message is required' }, { status: 400 });
@@ -31,6 +31,19 @@ export async function POST(request: Request) {
   );
 
   const reply = specificResponse ? specificResponse.response : genericResponses[Math.floor(Math.random() * genericResponses.length)];
+
+  // Persist to Supabase if userId is provided
+  if (userId) {
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      await supabase.from('chat_messages').insert([
+        { user_id: userId, role: 'user', content: message },
+        { user_id: userId, role: 'assistant', content: reply }
+      ]);
+    } catch (e) {
+      console.error('Failed to save chat history:', e);
+    }
+  }
 
   return NextResponse.json({
     success: true,

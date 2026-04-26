@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Thermometer, Ruler, MapPin, Star, Zap, ExternalLink, Loader2 } from 'lucide-react'
 import api from '@/lib/api'
+import DailyRefreshTimer from '@/components/ui/DailyRefreshTimer'
 
 export default function StarOfDayPage() {
   const [star, setStar] = useState<any>(null)
@@ -52,7 +53,7 @@ export default function StarOfDayPage() {
   return (
     <div style={{ paddingTop: '80px' }}>
       {/* Hero */}
-      <section style={{ position: 'relative', minHeight: '55vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+      <section style={{ position: 'relative', minHeight: '60dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
         {/* Real star image background */}
         {mainImage ? (
           <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${mainImage})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'brightness(0.22) saturate(1.5)' }} />
@@ -65,6 +66,7 @@ export default function StarOfDayPage() {
           {/* Animated star glow */}
           <div style={{ width: 140, height: 140, borderRadius: '50%', background: 'radial-gradient(circle, #fff7ed, #f59e0b, #dc2626)', margin: '0 auto 2rem', boxShadow: '0 0 80px rgba(245,158,11,0.7), 0 0 160px rgba(245,158,11,0.35)', animation: 'pulse-glow 3s ease-in-out infinite' }} />
           <div className="section-tag" style={{ display: 'inline-block', marginBottom: '1rem' }}>⭐ Star of the Day</div>
+          <div style={{ marginBottom: '1.5rem' }}><DailyRefreshTimer /></div>
           <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: 800, marginBottom: '0.75rem' }}>
             <span className="gradient-text-warm">{star.name}</span>
           </h1>
@@ -81,7 +83,7 @@ export default function StarOfDayPage() {
               <span style={{ background: 'rgba(6,182,212,0.15)', border: '1px solid rgba(6,182,212,0.3)', padding: '2px 10px', borderRadius: 100, color: 'var(--accent-cyan)', fontSize: '0.72rem' }}>REAL IMAGE</span>
               Hubble / ESO Imagery
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: star.nasa_images?.length > 1 ? '2fr 1fr 1fr' : '1fr', gap: '1rem' }}>
+            <div className="star-images-grid">
               <div className="glass" style={{ padding: 0, overflow: 'hidden', borderRadius: 16 }}>
                 <img src={mainImage} alt={`${star.name} — actual telescope image`}
                   style={{ width: '100%', height: 320, objectFit: 'cover', display: 'block' }}
@@ -144,6 +146,18 @@ export default function StarOfDayPage() {
           </a>
         </div>
       </div>
+      <style jsx>{`
+        .star-images-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 1rem;
+        }
+        @media (min-width: 1024px) {
+          .star-images-grid {
+             grid-template-columns: ${star.nasa_images?.length > 1 ? '2fr 1fr 1fr' : '1fr'};
+          }
+        }
+      `}</style>
     </div>
   )
 }

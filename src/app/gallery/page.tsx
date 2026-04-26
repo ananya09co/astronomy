@@ -147,11 +147,11 @@ export default function GalleryPage() {
       {/* Lightbox */}
       {lightbox && (
         <div className="modal-overlay" onClick={() => setLightbox(null)}>
-          <div style={{ maxWidth: 1000, width: '95%', position: 'relative' }} onClick={e => e.stopPropagation()}>
+          <div className="modal-content" style={{ maxWidth: 1000 }} onClick={e => e.stopPropagation()}>
             <img src={lightbox.hd_url || lightbox.image_url} alt={lightbox.title}
-              style={{ width: '100%', borderRadius: 16, maxHeight: '65vh', objectFit: 'contain', display: 'block', background: '#000' }} />
-            <div className="glass" style={{ marginTop: '1rem', padding: '1.5rem', borderRadius: 16 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
+              style={{ width: '100%', maxHeight: '60dvh', objectFit: 'contain', display: 'block', background: '#000', borderTopLeftRadius: 24, borderTopRightRadius: 24 }} />
+            <div style={{ padding: '1.5rem' }}>
+              <div className="modal-grid">
                 <div>
                   <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.5rem' }}>{lightbox.title}</h2>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: 1.7, maxWidth: 700 }}>{lightbox.description || 'Real NASA image from the NASA Image Library.'}</p>
