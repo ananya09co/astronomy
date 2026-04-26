@@ -5,6 +5,7 @@ import CountdownTimer from '@/components/home/CountdownTimer'
 import ApodHero from '@/components/home/ApodHero'
 import IssWidget from '@/components/home/IssWidget'
 import LeadGenSection from '@/components/ui/LeadGenSection'
+import { serverData } from '@/lib/serverData'
 
 const sectionCards = [
   { href: '/mars', icon: Activity, label: 'Mars Command', desc: 'Live telemetry & raw photos from Perseverance', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
@@ -19,7 +20,6 @@ const sectionCards = [
   { href: '/iss', icon: Satellite, label: 'ISS Tracker', desc: 'Live ISS position & world map tracking', color: '#06b6d4', bg: 'rgba(6,182,212,0.1)' },
 ]
 
-import { serverData } from '@/lib/serverData'
 
 async function getData() {
   const [eventRes, apodRes] = await Promise.allSettled([
