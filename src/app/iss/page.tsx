@@ -5,6 +5,19 @@ import api from '@/lib/api'
 import Link from 'next/link'
 import WorldMap from '@/components/ui/WorldMap'
 
+const AVATAR_GRADIENTS = [
+  'linear-gradient(135deg, #6366f1, #8b5cf6)', // Indigo-Violet
+  'linear-gradient(135deg, #06b6d4, #3b82f6)', // Cyan-Blue
+  'linear-gradient(135deg, #d946ef, #8b5cf6)', // Fuchsia-Violet
+  'linear-gradient(135deg, #f43f5e, #8b5cf6)', // Rose-Violet
+  'linear-gradient(135deg, #10b981, #06b6d4)', // Emerald-Cyan
+]
+
+function getAvatarGradient(name: string) {
+  const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  return AVATAR_GRADIENTS[index % AVATAR_GRADIENTS.length]
+}
+
 export default function IssTrackerPage() {
   const [iss, setIss] = useState<any>(null)
   const [crew, setCrew] = useState<any[]>([])
@@ -125,7 +138,13 @@ export default function IssTrackerPage() {
                 {crew.map((person, i) => (
                   <Link key={person.name} href={`/astronauts/${person.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem', borderRadius: '10px', transition: 'background 0.2s' }} className="glass-hover">
-                      <div style={{ width: 36, height: 36, borderRadius: '50%', background: `linear-gradient(135deg, hsl(${i * 60}, 70%, 50%), hsl(${i * 60 + 30}, 80%, 60%))`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: 700, flexShrink: 0 }}>
+                      <div style={{ 
+                        width: 36, height: 36, borderRadius: '50%', 
+                        background: getAvatarGradient(person.name), 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                        fontSize: '0.85rem', fontWeight: 700, flexShrink: 0,
+                        color: 'white'
+                      }}>
                         {person.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                       </div>
                       <div>
