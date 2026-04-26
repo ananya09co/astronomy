@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://cosmic-atlas.vercel.app',
   },
+  verification: {
+    google: 'google97221b336fca8b8d',
+  },
 }
 
 export const viewport: Viewport = {
